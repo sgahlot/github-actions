@@ -43,8 +43,8 @@ jobs:
         run: |
           echo "VALUES=${{ env.TEST_VALUE }}"
 
-      - name: Build with Maven - skipping all the tests
-        run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
+      # - name: Build with Maven - skipping all the tests
+      #   run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
 
       - name: Log in to Quay.io
         uses: redhat-actions/podman-login@v1
