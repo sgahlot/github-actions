@@ -1,9 +1,17 @@
 name: build-on-schedule
+
 run-name: Build using schedule - ${{ github.actor }}
+
 on: [push]
 # on:
 #   schedule:
 #     - cron: '30 14 * * *'   # every day at 2:30pm
+
+env:
+  REGISTRY_USER: ${{ secrets.QUAY_USER }}
+  IMAGE_REGISTRY: quay.io
+  REGISTRY_PASSWORD: ${{ secrets.QUAY_PASS }}
+
 jobs:
   create-keycloak-base-image:
     runs-on: ubuntu-latest
@@ -37,3 +45,10 @@ jobs:
 
       - name: Build with Maven - skipping all the tests
         run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
+
+      - name: Log in to Quay.io
+        uses: redhat-actions/podman-login@v1
+        with:
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
+          registry: ${{ env.IMAGE_REGISTRY }}
