@@ -1,0 +1,38 @@
+name: build-on-schedule
+run-name: Build using schedule - ${{ github.actor }}
+on: [push]
+# on:
+#   schedule:
+#     - cron: '30 14 * * *'   # every day at 2:30pm
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Checkout Keycloak 22 branch
+        uses: actions/checkout@v3
+        with:
+          repository: https://github.com/RHEcosystemAppEng/keycloak.git
+          ref: keycloak-22
+
+      - name: Set current tag and status
+        shell: bash
+        run: |
+          tag="$(git describe --tag --abbrev=0)"
+          status="$(git status)"
+          echo "TEST_TAG=${tag}" >> $GITHUB_ENV
+          echo "TEST_STATUS=${status}" >> $GITHUB_ENV
+
+      - name: Print current tag and status
+        shell: bash
+        run: |
+          echo "TAG=$TEST_TAG"
+          echo "STATUS=${{ env.TEST_STATUS }}"
+
+      # - name: Build with Maven - skipping all the tests
+      #   run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
