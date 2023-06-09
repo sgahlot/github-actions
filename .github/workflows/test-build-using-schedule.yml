@@ -25,16 +25,15 @@ jobs:
         run: |
           status="$(git status)"
           remote="$(git remote -v)"
-          echo "var<<EOF" >> $GITHUB_ENV
-          echo "TEST_STATUS=${status}" >> $GITHUB_ENV
-          echo "TEST_REMOTE=${remote}" >> $GITHUB_ENV
+          echo "TEST_VALUE<<EOF" >> $GITHUB_ENV
+          echo "status=${status}" >> $GITHUB_ENV
+          echo "remote=${remote}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Print current tag and status
         shell: bash
         run: |
-          echo "STATUS=$TEST_STATUS"
-          echo "REMOTE=$TEST_REMOTE"
+          echo "VALUES=${{ env.TEST_VALUE }}"
 
       # - name: Build with Maven - skipping all the tests
       #   run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
