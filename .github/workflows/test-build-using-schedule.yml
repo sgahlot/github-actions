@@ -13,8 +13,9 @@ env:
   REGISTRY_PASSWORD: ${{ secrets.QUAY_PASS }}
 
 jobs:
-  create-keycloak-base-image:
+  setup-keycloak-base-image:
     runs-on: ubuntu-latest
+    environment: keycloak_base_image
     steps:
       - name: Setup JDK 20
         uses: actions/setup-java@v3
