@@ -25,8 +25,10 @@ jobs:
         run: |
           status="$(git status)"
           remote="$(git remote -v)"
+          echo "var<<EOF" >> $GITHUB_ENV
           echo "TEST_STATUS=${status}" >> $GITHUB_ENV
           echo "TEST_REMOTE=${remote}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Print current tag and status
         shell: bash
