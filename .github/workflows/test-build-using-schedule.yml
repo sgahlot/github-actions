@@ -33,7 +33,6 @@ jobs:
         run: |
           echo "STATUS=$TEST_STATUS"
           echo "REMOTE=$TEST_REMOTE"
-          echo "ENV=${{ env }}"
 
       # - name: Build with Maven - skipping all the tests
       #   run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
