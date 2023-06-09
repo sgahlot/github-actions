@@ -23,17 +23,14 @@ jobs:
       - name: Set current tag and status
         shell: bash
         run: |
-          tag="$(git --tag)"
           status="$(git status)"
           remote="$(git remote -v)"
-          echo "TEST_TAG=${tag}" >> $GITHUB_ENV
           echo "TEST_STATUS=${status}" >> $GITHUB_ENV
           echo "TEST_REMOTE=${remote}" >> $GITHUB_ENV
 
       - name: Print current tag and status
         shell: bash
         run: |
-          echo "TAG=$TEST_TAG"
           echo "STATUS=${{ env.TEST_STATUS }}"
           echo "REMOTE=${{ env.TEST_REMOTE }}"
 
