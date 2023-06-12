@@ -95,7 +95,7 @@ jobs:
           tags: ${{ env.IMAGE_TAG }}
           context: ./quarkus/container
           containerfiles: |
-            Dockerfile
+            ./quarkus/container/Dockerfile
           build-args: |
             KEYCLOAK_DIST=keycloak-${{ env.KEYCLOAK_VERSION }}.tar.gz
 
