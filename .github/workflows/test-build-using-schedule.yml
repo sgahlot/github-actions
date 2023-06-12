@@ -29,7 +29,7 @@ jobs:
         with:
           repository: ${{ env.REPO_OWNER }}/keycloak-test
           ref: keycloak-22
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get status and remote
         shell: bash
