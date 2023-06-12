@@ -27,7 +27,7 @@ jobs:
       - name: Checkout Keycloak 22 branch
         uses: actions/checkout@v3
         with:
-          repository: ${{ env.REPO_OWNER }}/keycloak
+          repository: ${{ env.REPO_OWNER }}/keycloak-test
           ref: keycloak-22
 
       - name: Get status and remote
