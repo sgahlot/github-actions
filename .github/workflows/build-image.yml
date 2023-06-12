@@ -1,6 +1,6 @@
-name: build-on-schedule
+name: build-base-image
 
-run-name: Build using schedule - ${{ github.actor }}
+run-name: Build Base-image
 
 on: [push]
 # on:
