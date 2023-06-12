@@ -29,6 +29,8 @@ jobs:
     name: Checkout Keycloak 22 branch
     runs-on: ubuntu-latest
     environment: keycloak_base_image
+    outputs:
+      TAG: ${{ steps.tag.outputs.KEYCLOAK_22_TAG }}
 
     steps:
       - name: Checkout Keycloak 22 branch
@@ -55,7 +57,7 @@ jobs:
         shell: bash
         run: |
           echo "VALUES=${{ env.TEST_VALUE }}"
-          echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}" >> ${{ github.output }}
+          echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}" >> $GITHUB_OUTPUT
 
   build_keycloak:
     name: Build Keycloak 22 branch
@@ -75,7 +77,7 @@ jobs:
     steps:
       - name: Create tag
         run: |
-          git tag -a ${{ steps.tag.outputs.KEYCLOAK_22_TAG }} -m 'Base image tag'
+          git tag -a ${{ needs.checkout_keycloak.outputs.TAG }} -m 'Base image tag'
 
       - name: Push tag
         # with:
