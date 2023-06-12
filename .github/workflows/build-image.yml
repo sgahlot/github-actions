@@ -58,6 +58,7 @@ jobs:
 
   build_keycloak:
     name: Build Keycloak 22 branch
+    needs: [checkout_keycloak]
     runs-on: ubuntu-latest
     steps:
       - name: Build with Maven - skipping all the tests
@@ -65,6 +66,7 @@ jobs:
 
   tag_keycloak:
     name: Tag current codebase
+    needs: [build_keycloak]
     runs-on: ubuntu-latest
     # permissions:
     #   actions: write
