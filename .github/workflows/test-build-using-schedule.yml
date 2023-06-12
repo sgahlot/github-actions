@@ -83,7 +83,8 @@ jobs:
       - name: Copy tarfile for building base image
         working-directory: ./quarkus/container
         run: |
-          cp ../dist/target/keycloak-999.0.0-SNAPSHOT.tar.gz .
+          cp ../dist/target/keycloak-${{ env.KEYCLOAK_VERSION }}.tar.gz .
+          echo "Current dir: `pwd`" >> $GITHUB_STEP_SUMMARY
           ls -l *.gz >> $GITHUB_STEP_SUMMARY
 
       - name: Build base-image from source
@@ -92,6 +93,7 @@ jobs:
         with:
           image: ${{ env.IMAGE_NAME }}
           tags: ${{ env.IMAGE_TAG }}
+          context: ./quarkus/container
           containerfiles: |
             Dockerfile
           build-args: |
