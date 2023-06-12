@@ -29,7 +29,7 @@ jobs:
           repository: RHEcosystemAppEng/keycloak
           ref: keycloak-22
 
-      - name: Set current tag and status
+      - name: Get status and remote
         shell: bash
         run: |
           status="$(git status)"
@@ -38,11 +38,14 @@ jobs:
           echo "status=${status}" >> $GITHUB_ENV
           echo "remote=${remote}" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          tag="$( echo base-image-`date +\"%Y-%m-%d_%H_%M_%S\"`-${{ github.run_id }} )"
+          echo "KEYCLOAK_22_TAG=${tag}" >> $GITHUB_ENV
 
       - name: Print current tag and status
         shell: bash
         run: |
           echo "VALUES=${{ env.TEST_VALUE }}"
+          echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}"
 
       # - name: Build with Maven - skipping all the tests
       #   run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
@@ -53,3 +56,8 @@ jobs:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
           registry: ${{ env.IMAGE_REGISTRY }}
+
+      # - name: Create tag
+      #   run: |
+      #     git tag -a base-image-`date +"%Y-%m-%d_%H_%M_%S"`-${{github.run_id}} -m 'Base image tag'
+      #     //git push origin --tags
