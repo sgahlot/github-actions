@@ -11,6 +11,7 @@ env:
   REGISTRY_USER: ${{ secrets.QUAY_USER }}
   IMAGE_REGISTRY: quay.io
   REGISTRY_PASSWORD: ${{ secrets.QUAY_PASS }}
+  REPO_OWNER: ${{ vars.REPO_OWNER }}
 
 jobs:
   setup-keycloak-base-image:
