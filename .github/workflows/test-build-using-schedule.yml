@@ -57,7 +57,7 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           registry: ${{ env.IMAGE_REGISTRY }}
 
-      # - name: Create tag
-      #   run: |
-      #     git tag -a base-image-`date +"%Y-%m-%d_%H_%M_%S"`-${{github.run_id}} -m 'Base image tag'
-      #     //git push origin --tags
+      - name: Create and push tag
+        run: |
+          git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
+          git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}
