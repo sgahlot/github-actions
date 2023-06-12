@@ -51,10 +51,11 @@ jobs:
           echo "KEYCLOAK_22_TAG=${tag}" >> $GITHUB_ENV
 
       - name: Print current tag and status
+        id: tag
         shell: bash
         run: |
           echo "VALUES=${{ env.TEST_VALUE }}"
-          echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}"
+          echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}" >> ${{ github.output }}
 
   build_keycloak:
     name: Build Keycloak 22 branch
@@ -74,7 +75,7 @@ jobs:
     steps:
       - name: Create tag
         run: |
-          git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
+          git tag -a ${{ steps.tag.outputs.KEYCLOAK_22_TAG }} -m 'Base image tag'
 
       - name: Push tag
         # with:
