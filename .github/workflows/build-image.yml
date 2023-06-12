@@ -68,6 +68,7 @@ jobs:
     name: Tag current codebase
     needs: [build_keycloak]
     runs-on: ubuntu-latest
+    environment: keycloak_base_image
     # permissions:
     #   actions: write
     steps:
@@ -86,6 +87,8 @@ jobs:
   build_image:
     name: Build base image and use quay for fetching ubi9
     runs-on: ubuntu-latest
+    environment: keycloak_base_image
+
     steps:
       - name: Log in to Quay.io
         uses: redhat-actions/podman-login@v1
