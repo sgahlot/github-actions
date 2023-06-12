@@ -1,3 +1,14 @@
+# This action requires following configuration variables/secrets:
+#  Secrets:
+#   - QUAY_USER
+#   - QUAY_PASS
+#  Variables:
+#   - REPO_OWNER
+#   - IMAGE_NAME
+#   - IMAGE_TAG
+#   - KEYCLOAK_VERSION
+
+
 name: build-on-schedule
 
 run-name: Build using schedule - ${{ github.actor }}
@@ -12,6 +23,9 @@ env:
   IMAGE_REGISTRY: quay.io
   REGISTRY_PASSWORD: ${{ secrets.QUAY_PASS }}
   REPO_OWNER: ${{ vars.REPO_OWNER }}
+  IMAGE_NAME: ${{ vars.IMAGE_NAME }}
+  IMAGE_TAG: ${{ vars.IMAGE_TAG }}
+  KEYCLOAK_VERSION: ${{ vars.KEYCLOAK_VERSION }}
 
 jobs:
   setup-keycloak-base-image:
@@ -49,8 +63,15 @@ jobs:
           echo "VALUES=${{ env.TEST_VALUE }}"
           echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}"
 
-      # - name: Build with Maven - skipping all the tests
-      #   run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
+      - name: Build with Maven - skipping all the tests
+        run: mvn clean install -DskipTestsuite -DskipExamples -DskipTests
+
+      - name: Create and push tag
+        run: |
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}-github-actions[bot]"
+          git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
+          echo "git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}" >>  $GITHUB_STEP_SUMMARY
 
       - name: Log in to Quay.io
         uses: redhat-actions/podman-login@v1
@@ -59,9 +80,27 @@ jobs:
           password: ${{ env.REGISTRY_PASSWORD }}
           registry: ${{ env.IMAGE_REGISTRY }}
 
-      - name: Create and push tag
+      - name: Copy tarfile for building base image
+        working-directory: ./quarkus/container
         run: |
-          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "${{ github.actor }}-github-actions[bot]"
-          git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
-          git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}
+          cp ../dist/target/keycloak-999.0.0-SNAPSHOT.tar.gz .
+          ls -l *.gz >> $GITHUB_STEP_SUMMARY
+
+      - name: Build base-image from source
+        id: build_base_image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.IMAGE_TAG }}
+          containerfiles: |
+            Dockerfile
+          build-args: |
+            KEYCLOAK_DIST=keycloak-${{ env.KEYCLOAK_VERSION }}.tar.gz
+
+      - name: Push base-image
+        id: push_base_image
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build_base_image.outputs.image }}
+          tags: ${{ steps.build_base_image.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
