@@ -59,5 +59,7 @@ jobs:
 
       - name: Create and push tag
         run: |
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}-github-actions[bot]"
           git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
           git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}
