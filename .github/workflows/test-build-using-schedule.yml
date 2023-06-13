@@ -13,7 +13,7 @@ name: build-on-schedule
 
 run-name: Build using schedule - ${{ github.actor }}
 
-on: [push]
+on: [push, workflow_dispatch]
 # on:
 #   schedule:
 #     - cron: '30 14 * * *'   # every day at 2:30pm
