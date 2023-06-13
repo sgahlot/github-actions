@@ -2,9 +2,9 @@ name: build-base-image
 
 run-name: Build Base-image
 
-on:
-  schedule:
-    - cron: '30 14 * 1 *'   # Running in January ==> won't run at all => disabled it for now...
+on: [push, workflow_dispatch]
+  # schedule:
+  #   - cron: '30 14 * 1 *'   # Running in January ==> won't run at all => disabled it for now...
 
 env:
   REGISTRY_USER: ${{ secrets.QUAY_USER }}
