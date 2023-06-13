@@ -6,6 +6,8 @@ on: [push, workflow_dispatch]
   # schedule:
   #   - cron: '30 14 * 1 *'   # Running in January ==> won't run at all => disabled it for now...
 
+permissions: write-all
+
 env:
   REGISTRY_USER: ${{ secrets.QUAY_USER }}
   IMAGE_REGISTRY: quay.io
@@ -28,8 +30,6 @@ jobs:
     name: Checkout Keycloak 22 branch
     runs-on: ubuntu-latest
     environment: keycloak_base_image
-    permissions:
-      contents: write
     outputs:
       TAG: ${{ steps.tag.outputs.KEYCLOAK_22_TAG }}
 
