@@ -28,7 +28,8 @@ jobs:
     name: Checkout Keycloak 22 branch
     runs-on: ubuntu-latest
     environment: keycloak_base_image
-    permissions: write-all
+    permissions:
+      contents: write
     outputs:
       TAG: ${{ steps.tag.outputs.KEYCLOAK_22_TAG }}
 
@@ -59,10 +60,13 @@ jobs:
           echo "VALUES=${{ env.TEST_VALUE }}"
           echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}" >> $GITHUB_OUTPUT
 
-      - name: Create tag
+      - name: Setup Git Config
         run: |
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}-github-actions[bot]"
+
+      - name: Create tag
+        run: |
           git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
 
       - name: Push tag
