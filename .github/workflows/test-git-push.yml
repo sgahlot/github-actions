@@ -46,6 +46,7 @@ jobs:
         with:
           repository: ${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}
           ref: ${{ env.REPO_BRANCH }}
+          token: ${{ secrets.ACTIONS_PAT }}
 
       - name: Get status and remote
         run: |
@@ -73,8 +74,6 @@ jobs:
           git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
 
       - name: Push tag
-        with:
-          token: ${{ secrets.ACTIONS_PAT }}
         run: |
           echo "Pushing the newly created git tag - ${{ env.KEYCLOAK_22_TAG }}" >>  $GITHUB_STEP_SUMMARY
           git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}
