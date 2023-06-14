@@ -26,7 +26,8 @@ env:
   REGISTRY_USER: ${{ vars.QUAY_USER }}
   IMAGE_REGISTRY: quay.io
   REPO_OWNER: ${{ vars.REPO_OWNER }}
-  REPO_NAME: keycloak-22-rel
+  REPO_NAME: ${{ vars.REPO_NAME }}
+  REPO_BRANCH: ${{ vars.REPO_BRANCH }}
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   IMAGE_TAG: ${{ vars.IMAGE_TAG }}
   KEYCLOAK_VERSION: ${{ vars.KEYCLOAK_VERSION }}
@@ -37,11 +38,14 @@ jobs:
     environment: keycloak_base_image
 
     steps:
+      - name: Print environment info
+        run: env
+
       - name: Checkout Keycloak 22 branch
         uses: actions/checkout@v3
         with:
           repository: ${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}
-          # token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ env.REPO_BRANCH }}
 
       - name: Get status and remote
         run: |
