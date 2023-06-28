@@ -31,6 +31,7 @@ env:
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   IMAGE_TAG: ${{ vars.IMAGE_TAG }}
   KEYCLOAK_VERSION: ${{ vars.KEYCLOAK_VERSION }}
+  EMAIL_SENDER: "RHEcosystemAppEng team"
 
 jobs:
   test-git-push-tags:
@@ -78,10 +79,11 @@ jobs:
           password: ${{ secrets.MAIL_PASS }}
           subject: ${{ github.job }} - new Keycloak base-image
           to: sgahlot@gmail.com,sgahlot@redhat.com
-          from: "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
+          from: ${{ env.EMAIL_SENDER }}
           reply_to: "${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
-          # body: Workflow ${{ github.job }} of ${{github.repository}} has successfully built and pushed a new Keycloak base-image.
-          html_body: Workflow ${{ github.job }} of ${{github.repository}} triggered by ${{ github.actor }} has successfully built and pushed a new Keycloak base-image with tag ${{ env.KEYCLOAK_22_TAG }}.
+          html_body: |
+            Workflow ${{ github.job }} of ${{github.repository}} triggered by ${{ github.actor }} has successfully built and pushed a new Keycloak base-image.
+          convert_markdown: true
 
       # - name: Push tag
       #   run: |

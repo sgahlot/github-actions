@@ -151,8 +151,8 @@ jobs:
             Workflow ${{ github.job }} of ${{github.repository}} triggered by ${{ github.actor }} has successfully built and pushed a new Keycloak base-image.
               
             New base-image information is given below:
-              * Registry: "${{ env.IMAGE_REGISTRY }}"
-              * Path: "${{ steps.push_base_image.outputs.registry-paths }}"
-              * Digest: ${{ steps.push_base_image.outputs.digest }}"
+              * Registry: ${{ env.IMAGE_REGISTRY }}
+              * Path: ${{ steps.push_base_image.outputs.registry-paths }}
+              * Digest: ${{ steps.push_base_image.outputs.digest }}
           convert_markdown: true
   
