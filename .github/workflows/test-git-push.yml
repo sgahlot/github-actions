@@ -62,19 +62,28 @@ jobs:
       - name: Print current tag and status
         run: |
           echo "VALUES=${{ env.TEST_VALUE }}"
-          echo "KEYCLOAK_22_TAG=${{ env.KEYCLOAK_22_TAG }}"
+          echo "KEYCLOAK_22_TAG=TMP_SG-${{ env.KEYCLOAK_22_TAG }}"
 
       - name: Setup Git Config
         run: |
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
           git config --global user.name "${{ github.actor }}-github-actions[bot]"
 
-      - name: Create tag
-        run: |
-          git tag -a ${{ env.KEYCLOAK_22_TAG }} -m 'Base image tag'
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USER }}
+          password: ${{ secrets.MAIL_PASS }}
+          subject: ${{ github.job }} - new Keycloak base-image
+          to: sgahlot@gmail.com,sgahlot@redhat.com
+          from: "${{ github.actor_id }}+${{ github.actor }}-github-actions[bot]@users.noreply.github.com"
+          # body: Workflow ${{ github.job }} of ${{github.repository}} has successfully built and pushed a new Keycloak base-image.
+          html_body: Workflow ${{ github.job }} of ${{github.repository}} triggered by ${{ github.actor }} has successfully built and pushed a new Keycloak base-image with tag ${{ env.KEYCLOAK_22_TAG }}.
 
-      - name: Push tag
-        run: |
-          echo "Pushing the newly created git tag - ${{ env.KEYCLOAK_22_TAG }}" >>  $GITHUB_STEP_SUMMARY
-          git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}
-          echo "Using tag ${{ env.KEYCLOAK_22_TAG }} to create the base-image" >> $GITHUB_STEP_SUMMARY
+      # - name: Push tag
+      #   run: |
+      #     echo "Pushing the newly created git tag - ${{ env.KEYCLOAK_22_TAG }}" >>  $GITHUB_STEP_SUMMARY
+      #     git push origin refs/tags/${{ env.KEYCLOAK_22_TAG }}
+      #     echo "Using tag ${{ env.KEYCLOAK_22_TAG }} to create the base-image" >> $GITHUB_STEP_SUMMARY
