@@ -30,7 +30,6 @@ env:
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   IMAGE_TAG: ${{ vars.IMAGE_TAG }}
   KEYCLOAK_VERSION: ${{ vars.KEYCLOAK_VERSION }}
-  EMAIL_SEND_TO_LIST: ${{ vars.CREATE_IMAGE_NOTIFIERS }}
   WORKFLOW_USER: "${{ github.actor }}${{ vars.WORKFLOW_USER_SUFFIX }}"
   WORKFLOW_EMAIL: "${{ github.actor }}${{ vars.WORKFLOW_USER_SUFFIX }}@${{ vars.WORKFLOW_EMAIL_DOMAIN }}"
 
