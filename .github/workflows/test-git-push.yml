@@ -31,7 +31,7 @@ env:
   IMAGE_NAME: ${{ vars.IMAGE_NAME }}
   IMAGE_TAG: ${{ vars.IMAGE_TAG }}
   KEYCLOAK_VERSION: ${{ vars.KEYCLOAK_VERSION }}
-  EMAIL_SENDER: "RHEcosystemAppEng team"
+  EMAIL_SENDER: ${{ vars.EMAIL_SENDER_NAME }}
 
 jobs:
   test-git-push-tags:

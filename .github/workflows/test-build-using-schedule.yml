@@ -20,6 +20,8 @@ defaults:
     shell: bash
 
 env:
+  EMAIL_SENDER: ${{ vars.EMAIL_SENDER_NAME }}
+  EMAIL_SEND_TO_LIST: ${{ vars.CREATE_IMAGE_NOTIFIERS }}
   REGISTRY_PASSWORD: ${{ secrets.QUAY_PASS }}
   REGISTRY_USER: ${{ vars.QUAY_USER }}
   IMAGE_REGISTRY: quay.io
@@ -145,7 +147,7 @@ jobs:
           password: ${{ secrets.MAIL_PASS }}
           subject: ${{ github.job }} - new Keycloak base-image is available
           to: ${{ env.EMAIL_SEND_TO_LIST }}
-          from: ${{ env.WORKFLOW_EMAIL }}
+          from: ${{ env.EMAIL_SENDER }}
           reply_to: ${{ env.WORKFLOW_EMAIL }}
           html_body: |
             Workflow ${{ github.job }} of ${{github.repository}} triggered by ${{ github.actor }} has successfully built and pushed a new Keycloak base-image.
