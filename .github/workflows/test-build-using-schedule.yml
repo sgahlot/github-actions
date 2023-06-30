@@ -155,5 +155,6 @@ jobs:
               * Registry: ${{ env.IMAGE_REGISTRY }}
               * Path: ${{ steps.push_base_image.outputs.registry-paths }}
               * Digest: ${{ steps.push_base_image.outputs.digest }}
+
+            Workflow run details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           convert_markdown: true
-  
