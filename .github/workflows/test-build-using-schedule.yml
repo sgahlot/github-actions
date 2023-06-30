@@ -134,7 +134,7 @@ jobs:
         run: |
           echo "* Pushed Keycloak-22 image to ${{ env.IMAGE_REGISTRY }}" >>  $GITHUB_STEP_SUMMARY
           echo "* Image info:" >>  $GITHUB_STEP_SUMMARY
-          echo "  * path: ${{ steps.push_base_image.outputs.registry-paths }}" >>  $GITHUB_STEP_SUMMARY
+          echo "  * path: ${{ steps.push_base_image.outputs.registry-path }}" >>  $GITHUB_STEP_SUMMARY
           echo "  * digest: ${{ steps.push_base_image.outputs.digest }}" >>  $GITHUB_STEP_SUMMARY        
 
       - name: Send email with base-image info
@@ -153,7 +153,7 @@ jobs:
               
             New base-image information is given below:
               * Registry: ${{ env.IMAGE_REGISTRY }}
-              * Path: ${{ steps.push_base_image.outputs.registry-paths }}
+              * Path: ${{ steps.push_base_image.outputs.registry-path }}
               * Digest: ${{ steps.push_base_image.outputs.digest }}
 
             Workflow run details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
