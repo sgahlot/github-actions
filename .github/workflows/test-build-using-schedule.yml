@@ -40,10 +40,10 @@ jobs:
     environment: keycloak_base_image
 
     steps:
-      - name: Setup JDK 20
+      - name: Setup JDK 11
         uses: actions/setup-java@v3
         with:
-          java-version: '20'
+          java-version: '11'
           distribution: 'temurin'
 
       - name: Checkout Keycloak 22 branch
