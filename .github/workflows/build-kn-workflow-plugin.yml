@@ -37,6 +37,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: kiegroup/kie-tools.git
+          ref: bump_devmode_1.43
 
   build_repo:
     name: Build kie-tools branch
