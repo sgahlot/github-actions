@@ -7,8 +7,8 @@ on: [push, workflow_dispatch]
 permissions: write-all
 
 jobs:
-  setup_tooling:
-    name: Setup tooling for the build
+  setup_n_build:
+    name: Setup tooling, checkout and build kie-tools
     runs-on: ubuntu-latest
 
     steps:
@@ -23,16 +23,12 @@ jobs:
         with:
           node-version: '18'
 
-      # - name: Setup pnpm
-      #   uses: pnpm/action-setup@v2
-      #   with:
-      #     version: 8
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
 
-  checkout_repo:
-    name: Checkout kie-tools
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Checkout kie-tools repo
         uses: actions/checkout@v3
         with:
@@ -57,17 +53,6 @@ jobs:
           pwd >> $GITHUB_STEP_SUMMARY
           echo "Listing of current dir" >> $GITHUB_STEP_SUMMARY
           ls -l  >> $GITHUB_STEP_SUMMARY
-
-  build_repo:
-    name: Build kie-tools branch
-    needs: [setup_tooling, checkout_repo]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
 
       - name: Download dependencies with pnpm
         run: |
