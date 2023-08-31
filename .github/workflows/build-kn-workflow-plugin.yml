@@ -1,0 +1,53 @@
+name: build-kn-workflow-plugin
+
+run-name: Build kn workflow plugin
+
+on: [push, workflow_dispatch]
+
+permissions: write-all
+
+jobs:
+  setup_java:
+    name: Setup Java 20
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup JDK 20
+        uses: actions/setup-java@v3
+        with:
+          java-version: '20'
+          distribution: 'temurin'
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+  checkout_repo:
+    name: Checkout kie-tools
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout kie-tools repo
+        uses: actions/checkout@v3
+        with:
+          repository: kiegroup/kie-tools.git
+
+  build_repo:
+    name: Build kie-tools branch
+    needs: [checkout_repo]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dependencies with pnpm
+        run: |
+          echo 'pnpm bootstrap -F "@kie-tools/kn-plugin-workflow..."' >> $GITHUB_STEP_SUMMARY
+          pnpm bootstrap -F "@kie-tools/kn-plugin-workflow..."
+          echo 'Dependencies successfully installed...' >> $GITHUB_STEP_SUMMARY
+          pnpm -r -F "@kie-tools/kn-plugin-workflow..." build:dev
+          echo "Listing of executable generated from the build step..."
+          ls -l packages/kn-plugin-workflow/dist >> $GITHUB_STEP_SUMMARY
