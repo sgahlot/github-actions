@@ -8,7 +8,7 @@ permissions: write-all
 
 jobs:
   setup_java:
-    name: Setup Java 20
+    name: Setup tooling for the build
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,7 @@ jobs:
       - name: Checkout kie-tools repo
         uses: actions/checkout@v3
         with:
-          repository: kiegroup/kie-tools.git
+          repository: kiegroup/kie-tools
           ref: bump_devmode_1.43
 
   build_repo:
