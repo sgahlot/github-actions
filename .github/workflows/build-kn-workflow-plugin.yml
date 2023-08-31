@@ -7,7 +7,7 @@ on: [push, workflow_dispatch]
 permissions: write-all
 
 jobs:
-  setup_java:
+  setup_tooling:
     name: Setup tooling for the build
     runs-on: ubuntu-latest
 
@@ -41,7 +41,7 @@ jobs:
 
   build_repo:
     name: Build kie-tools branch
-    needs: [checkout_repo]
+    needs: [setup_tooling, checkout_repo]
     runs-on: ubuntu-latest
     steps:
       - name: Download dependencies with pnpm
