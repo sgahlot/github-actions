@@ -23,10 +23,10 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      # - name: Setup pnpm
+      #   uses: pnpm/action-setup@v2
+      #   with:
+      #     version: 8
 
   checkout_repo:
     name: Checkout kie-tools
@@ -44,6 +44,12 @@ jobs:
     needs: [setup_tooling, checkout_repo]
     runs-on: ubuntu-latest
     steps:
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
       - name: Download dependencies with pnpm
         run: |
           echo 'pnpm bootstrap -F "@kie-tools/kn-plugin-workflow..."' >> $GITHUB_STEP_SUMMARY
