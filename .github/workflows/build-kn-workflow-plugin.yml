@@ -39,6 +39,18 @@ jobs:
           repository: "kiegroup/kie-tools"
           ref: "main"
 
+      - name: Get status and remote
+        run: |
+          status="$(git status)"
+          remote="$(git remote -v)"
+          echo "GIT_STATUS_N_REMOTE<<EOF" >> $GITHUB_ENV
+          echo "status=${status}" >> $GITHUB_ENV
+          echo "remote=${remote}" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Print git status and remote
+        run: echo "GIT_STATUS_N_REMOTE=${{ env.GIT_STATUS_N_REMOTE }}"
+
   build_repo:
     name: Build kie-tools branch
     needs: [setup_tooling, checkout_repo]
