@@ -51,6 +51,13 @@ jobs:
       - name: Print git status and remote
         run: echo "GIT_STATUS_N_REMOTE=${{ env.GIT_STATUS_N_REMOTE }}"
 
+      - name: Current dir and listing
+        run: |
+          echo "Current dir: " >> $GITHUB_STEP_SUMMARY
+          pwd >> $GITHUB_STEP_SUMMARY
+          echo "Listing of current dir" >> $GITHUB_STEP_SUMMARY
+          ls -l  >> $GITHUB_STEP_SUMMARY
+
   build_repo:
     name: Build kie-tools branch
     needs: [setup_tooling, checkout_repo]
